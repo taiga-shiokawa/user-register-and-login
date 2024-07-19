@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ホーム</title>
+</head>
+<body>
+  <ul>
+    <li><a href="/register">アカウント作成</a></li>
+    <li><a href="/login">ログイン</a></li>
+    <li><a href="/index">ホーム</a></li>
+    <li><a href="/pass-update">パスワード変更</a></li>
+  </ul>
+
+  <form action="/pass-update" method="post">
+    <div>
+      <label for="currentPassword">現在のパスワード：</label>
+      <input type="password" id="currentPassword" name="currentPassword" required>
+    </div>
+    <div>
+      <label for="newPassword">新しいパスワード：</label>
+      <input type="password" id="newPassword" name="newPassword" required>
+    </div>
+    <div>
+      <label for="confirmPassword">新しいパスワード（確認）：</label>
+      <input type="password" id="confirmPassword" name="confirmPassword" required>
+    </div>
+    <button type="submit">パスワードを更新</button>
+  </form>
+  
+  <!-- <script>
+  document.getElementById('passwordUpdateForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const currentPassword = document.getElementById('currentPassword').value;
+    const newPassword = document.getElementById('newPassword').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+  
+    if (newPassword !== confirmPassword) {
+      alert('新しいパスワードと確認用パスワードが一致しません');
+      return;
+    }
+  
+    try {
+      const response = await fetch('/pass-update', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ currentPassword, newPassword }),
+      });
+  
+      const data = await response.json();
+  
+      if (response.ok) {
+        alert(data.message);
+        // フォームをリセットするなどの追加の処理
+      } else {
+        alert(data.message);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('パスワードの更新中にエラーが発生しました');
+    }
+  });
+  </script> -->
+</body>
+</html>
