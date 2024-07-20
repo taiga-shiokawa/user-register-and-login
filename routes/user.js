@@ -73,7 +73,7 @@ router.get("/pass-update", (req, res) => {
 });
 
 // パスワード更新処理
-router.post("/pass-update", async (req, res) => {
+router.put("/pass-update", async (req, res) => {
   const { currentPassword, newPassword } = req.body;
 
   if (!req.isAuthenticated()) {
@@ -86,25 +86,27 @@ router.post("/pass-update", async (req, res) => {
       return res.status(404).json({ message: 'ユーザーが見つかりません' });
     }
 
-    const isValid = await user.authenticate(currentPassword);
-    if (!isValid) {
-      return res.status(400).json({ message: '現在のパスワードが正しくありません' });
-    }
-
-    await user.setPassword(newPassword);
-    await user.save();
-
-    req.login(user, (err) => {
-      if (err) {
-        console.error("Re-login error:", err);
-        return res.status(500).json({ message: 'ログインエラーが発生しました' });
+    user.authenticate(currentPassword, async (err, user, passwordError) => {
+      if (err || passwordError) {
+        return res.status(400).json({ message: '現在のパスワードが正しくありません' });
       }
-      res.json({ message: 'パスワードが正常に更新されました' });
+
+      await user.setPassword(newPassword);
+      await user.save();
+
+      req.login(user, (err) => {
+        if (err) {
+          console.error("Re-login error:", err);
+          return res.status(500).json({ message: 'ログインエラーが発生しました' });
+        }
+        res.json({ message: 'パスワードが正常に更新されました' });
+      });
     });
   } catch (error) {
     console.error("Password update error:", error);
     res.status(500).json({ message: 'パスワードの更新中にエラーが発生しました' });
   }
 });
+
 
 module.exports = router;
