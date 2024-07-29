@@ -73,7 +73,7 @@ router.get("/pass-update", (req, res) => {
 });
 
 // パスワード更新処理
-router.put("/pass-update", async (req, res) => {
+router.post("/pass-update", async (req, res) => {
   const { currentPassword, newPassword } = req.body;
 
   if (!req.isAuthenticated()) {
